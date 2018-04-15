@@ -1,0 +1,13 @@
+<mat-form-field>
+  <mat-select (selectionChange)="onChange($event)" placeholder="Vessels" name="Vessels" [(ngModel)]="selectedRoute">
+    <mat-option *ngFor="let vessel of vessels" [value]="vessel.value">
+      {{vessel.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<section *ngIf="selectedRoute">
+  <mat-checkbox (change)="onSetsChange($event)" [(ngModel)]="speedSets.speedGraph">Speed Graph</mat-checkbox>
+</section>
+<section *ngIf="selectedRoute">
+  <mat-checkbox (change)="onSetsChange($event)" [(ngModel)]="speedSets.speedRoute">Speed Route</mat-checkbox>
+</section>

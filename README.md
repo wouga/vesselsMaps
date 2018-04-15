@@ -1,27 +1,30 @@
-# NgLogindex
+# VesselsMaps
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
-
+## Installation
+Run `yarn install` for install dependencies
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `yarn start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## TASK
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+The goal of the challenge is to create a SPA to visualise exported sea routes on the map.
+Sea routes are available here:
+https://s3-eu-west-1.amazonaws.com/logindex-dev-export/challenge/web_challenge.csv
 
-## Build
+It is a CSV file with following columns:
+route_id - some arbitrary route id
+from_port - route origin
+to_port - route destination
+leg_duration - trip duration in milliseconds
+points - an array of vessel observations from GPS where observation is [longitude, latitude, timestamp in epoch milliseconds, actual vessel speed in knots]
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Requirements:
+1. There should be a route picker component that allows to select a route to be shown on the map
+2. Map that shows selected route
+3. There should be a graph component that shows how speed changes in time for selected route
 
-## Running unit tests
+Bonus requirement would be to "color" the line on the map according to vessels speed, ie. close to the port, it should be slow eg. red and open sea where the vessel is faster should be green
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+You can do it either in React or Angular 2+, no preferences here.
+Results please push to a github repo where we can access it.

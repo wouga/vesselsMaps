@@ -1,0 +1,58 @@
+<aol-map [width]="'100%'" [height]="'100%'">
+  <aol-interaction-default></aol-interaction-default>
+  <aol-control-defaults></aol-control-defaults>
+  <aol-control-fullscreen></aol-control-fullscreen>
+  <aol-view [zoom]="info.zoom">
+    <aol-coordinate [x]="info.lng" [y]="info.lat" srid="EPSG:4326"></aol-coordinate>
+  </aol-view>
+  <aol-layer-tile [opacity]="0.5">
+    <aol-source-osm></aol-source-osm>
+  </aol-layer-tile>
+  <aol-layer-vector [opacity]="opacity">
+    <aol-source-vector>
+
+      <aol-feature *ngFor="let point of info.borderPoints">
+        <aol-geometry-point>
+          <aol-coordinate [x]="point.lng" [y]="point.lat" srid="EPSG:4326"></aol-coordinate>
+        </aol-geometry-point>
+        <aol-style>
+          <aol-style-circle [radius]="5">
+            <aol-style-stroke [color]="(point.type==='start') ? '#2E7D32' : '#B71C1C'" [width]="2"></aol-style-stroke>
+            <aol-style-fill [color]="(point.type==='start') ? '#388E3C' : '#D32F2F'"></aol-style-fill>
+          </aol-style-circle>
+        </aol-style>
+      </aol-feature>
+
+      <aol-overlay *ngFor="let point of info.borderPoints">
+        <aol-coordinate [x]="point.lng" [y]="point.lat" srid="EPSG:4326">
+        </aol-coordinate>
+        <aol-content>
+          <div [ngClass]="{'start-point': point.type==='start', 'end-point': point.type==='end'}">{{point.name}}</div>
+        </aol-content>
+      </aol-overlay>
+
+      <aol-feature *ngFor="let item of lineData">
+        <aol-geometry-linestring>
+          <aol-collection-coordinates [coordinates]="[[item.p0.lng, item.p0.lat],[item.p1.lng, item.p1.lat]]" srid="EPSG:4326">
+          </aol-collection-coordinates>
+        </aol-geometry-linestring>
+        <aol-style>
+          <aol-style-stroke [width]="item.width" [color]="info.speedRoute ? item.color : '#000000'"></aol-style-stroke>
+        </aol-style>
+      </aol-feature>
+
+    </aol-source-vector>
+  </aol-layer-vector>
+</aol-map>
+<div class="chart-wrapper" *ngIf="info.speedGraph && lineData &&  lineData.length>0">
+  <ngx-charts-line-chart  [scheme]="colorScheme" [results]="graphData"
+    [xAxis]="false" [yAxis]="true" [autoScale]="true" (select)="onGraphSelect($event)">
+    <ng-template #tooltipTemplate let-model="model">
+      <div class="area-tooltip-container">
+        <div><strong>{{model.series}}</strong></div>
+        <div>{{ timestamp2Date(model.name) }}</div>
+        <div>Speed: {{ model.value }} knots</div>
+      </div>
+    </ng-template>
+  </ngx-charts-line-chart>
+</div>
